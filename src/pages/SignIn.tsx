@@ -5,7 +5,6 @@ import { Input } from "../components/Input";
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsloading] = useState(false);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -14,14 +13,17 @@ export function SignIn() {
   return (
     <form onSubmit={onSubmit} className="w-full flex flex-col gap-4">
       <div className="mt-4 mb-4">
-        <h2 className="text-2xl font-semibold text-blue-100">Olá de novo!</h2>
+        <h2 className="text-2xl font-semibold text-blue-100">
+          Entrar na conta
+        </h2>
         <p className="text-gray-100">
-          Por favor, insira os seus dados para fazer login.
+          Escolha a aba que voce deseja e informe seus dados para continuar.
         </p>
       </div>
 
       <Input
         required
+        value={email}
         legend="E-mail"
         type="email"
         placeholder="Insira seu e-mail"
@@ -30,6 +32,7 @@ export function SignIn() {
 
       <Input
         required
+        value={password}
         legend="Senha"
         type="password"
         placeholder="Insira sua senha"
@@ -37,17 +40,10 @@ export function SignIn() {
       />
 
       <Button type="submit">Continuar</Button>
-      <a
-        href="/signup"
-        className="text-sm font-semibold text-gray-100 mt-10 mb-4 text-center
-       hover:text-blue-200 transition ease-linear"
-      >
-        Criar conta
-      </a>
 
       <p className="text-xxs text-gray-900">
-        Ao clicar em continuar, você concorda com nossos Termos de Serviço e
-        Politica de Privacidade
+        Ao clicar em continuar, voce concorda com nossos Termos de Servico e
+        Politica de Privacidade.
       </p>
     </form>
   );
