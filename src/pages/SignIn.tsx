@@ -1,17 +1,47 @@
-import { useState } from "react";
+import { useActionState } from "react";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
+import { z, ZodError } from "zod";
+import { api } from "../services/api";
+import { AxiosError } from "axios";
+import { useAuth } from "../hooks/useAuth";
+
+const signInScheme = z.object({
+  email: z.email({ message: "Email Inválido" }),
+  password: z.string().trim().min(4, { message: "Informe a senha" }),
+});
 
 export function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [state, formAction, isLoading] = useActionState(signIn, null);
 
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    alert("Enviado!");
+  const auth = useAuth();
+
+  async function signIn(_: any, formData: FormData) {
+    try {
+      const data = signInScheme.parse({
+        email: formData.get("email"),
+        password: formData.get("password"),
+      });
+
+      const response = await api.post("/auth/login", data);
+      auth.save(response.data);
+    } catch (error) {
+      console.log(error);
+
+      if (error instanceof ZodError) {
+        return { message: error.issues[0].message };
+      }
+
+      if (error instanceof AxiosError) {
+        return { message: error.response?.data.message };
+      }
+
+      return { message: "Não foi possível entrar!" };
+    }
   }
+
   return (
-    <form onSubmit={onSubmit} className="w-full flex flex-col gap-4">
+    <form action={formAction} className="w-full flex flex-col gap-4">
       <div className="mt-4 mb-4">
         <h2 className="text-2xl font-semibold text-blue-100">
           Entrar na conta
@@ -23,23 +53,29 @@ export function SignIn() {
 
       <Input
         required
-        value={email}
+        name="email"
         legend="E-mail"
         type="email"
         placeholder="Insira seu e-mail"
-        onChange={(e) => setEmail(e.target.value)}
+        // onChange={(e) => setEmail(e.target.value)}
       />
 
       <Input
         required
-        value={password}
+        name="password"
         legend="Senha"
         type="password"
         placeholder="Insira sua senha"
-        onChange={(e) => setPassword(e.target.value)}
+        // onChange={(e) => setPassword(e.target.value)}
       />
 
-      <Button type="submit">Continuar</Button>
+      <p className="text-sm text-red-600 text-center my-4 font-medium">
+        {state?.message}
+      </p>
+
+      <Button type="submit" isLoading={isLoading}>
+        Continuar
+      </Button>
 
       <p className="text-xxs text-gray-900">
         Ao clicar em continuar, voce concorda com nossos Termos de Servico e
