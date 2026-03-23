@@ -5,6 +5,7 @@ import { z, ZodError } from "zod";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { api } from "../services/api";
+import { Eye, EyeOff, Mail, User } from "lucide-react";
 
 const signUpShema = z
   .object({
@@ -34,6 +35,8 @@ export function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -91,6 +94,7 @@ export function SignUp() {
         value={name}
         legend="Nome"
         type="text"
+        rightElement={<User size={18} />}
         placeholder="Insira seu nome"
         onChange={(e) => setName(e.target.value)}
       />
@@ -100,6 +104,7 @@ export function SignUp() {
         value={email}
         legend="E-mail"
         type="email"
+        rightElement={<Mail size={18} />}
         placeholder="Insira seu e-mail"
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -108,7 +113,12 @@ export function SignUp() {
         required
         value={password}
         legend="Senha"
-        type="password"
+        type={showPassword ? "text" : "password"}
+        rightElement={
+          <button type="button" onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        }
         placeholder="Insira sua senha"
         onChange={(e) => setPassword(e.target.value)}
       />
@@ -117,7 +127,15 @@ export function SignUp() {
         required
         value={passwordConfirm}
         legend="Confirmar Senha"
-        type="password"
+        type={showPasswordConfirm ? "text" : "password"}
+        rightElement={
+          <button
+            type="button"
+            onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+          >
+            {showPasswordConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        }
         placeholder="Confirme a sua senha"
         onChange={(e) => setPasswordConfirm(e.target.value)}
       />

@@ -1,10 +1,11 @@
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { z, ZodError } from "zod";
 import { api } from "../services/api";
 import { AxiosError } from "axios";
 import { useAuth } from "../hooks/useAuth";
+import { Eye, EyeOff, Mail } from "lucide-react";
 
 const signInScheme = z.object({
   email: z.email({ message: "Email Inválido" }),
@@ -13,6 +14,7 @@ const signInScheme = z.object({
 
 export function SignIn() {
   const [state, formAction, isLoading] = useActionState(signIn, null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const auth = useAuth();
 
@@ -56,6 +58,7 @@ export function SignIn() {
         name="email"
         legend="E-mail"
         type="email"
+        rightElement={<Mail size={18} />}
         placeholder="Insira seu e-mail"
         // onChange={(e) => setEmail(e.target.value)}
       />
@@ -64,7 +67,12 @@ export function SignIn() {
         required
         name="password"
         legend="Senha"
-        type="password"
+        type={showPassword ? "text" : "password"}
+        rightElement={
+          <button type="button" onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        }
         placeholder="Insira sua senha"
         // onChange={(e) => setPassword(e.target.value)}
       />
