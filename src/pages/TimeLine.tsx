@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { z, ZodError } from "zod";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";

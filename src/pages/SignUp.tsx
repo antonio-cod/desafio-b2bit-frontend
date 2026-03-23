@@ -1,24 +1,33 @@
+import { AxiosError } from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import { z, ZodError } from "zod";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
-import { z, ZodError } from "zod";
 import { api } from "../services/api";
-import { useNavigate } from "react-router";
-import { AxiosError } from "axios";
 
 const signUpShema = z
   .object({
     name: z.string().trim().min(1, { message: "Informe o nome" }),
-    email: z.email({ message: "E-mail inválido" }),
+    email: z.email({ message: "E-mail invalido" }),
     password: z
       .string()
       .min(4, { message: "Senha deve ter pelo menos 4 digitos" }),
     passwordConfirm: z.string({ message: "Confirme a senha" }),
   })
   .refine((data) => data.password === data.passwordConfirm, {
-    message: "As senhas não são iguais",
+    message: "As senhas nao sao iguais",
     path: ["passwordConfirm"],
   });
+
+type ApiErrorResponse = {
+  message?: string;
+  error?: string;
+};
+
+function getApiErrorMessage(error: AxiosError<ApiErrorResponse>) {
+  return error.response?.data?.error ?? error.response?.data?.message ?? null;
+}
 
 export function SignUp() {
   const [name, setName] = useState("");
@@ -31,6 +40,7 @@ export function SignUp() {
 
   async function onSubmit(e: React.SubmitEvent) {
     e.preventDefault();
+
     try {
       setIsLoading(true);
 
@@ -43,7 +53,7 @@ export function SignUp() {
 
       await api.post("/auth/register", data);
 
-      if (confirm("Cadastrado com sucesso. Ir para tela de Loguin")) {
+      if (confirm("Cadastrado com sucesso. Ir para tela de Login?")) {
         navigate("/");
       }
     } catch (error) {
@@ -52,10 +62,14 @@ export function SignUp() {
       }
 
       if (error instanceof AxiosError) {
-        return alert(error.response?.data.message);
+        const apiError = error as AxiosError<ApiErrorResponse>;
+
+        return alert(
+          getApiErrorMessage(apiError) ?? "Nao foi possivel cadastrar!",
+        );
       }
 
-      alert("Não foi possível cadastrar!");
+      alert("Nao foi possivel cadastrar!");
     } finally {
       setIsLoading(false);
     }
@@ -107,6 +121,7 @@ export function SignUp() {
         placeholder="Confirme a sua senha"
         onChange={(e) => setPasswordConfirm(e.target.value)}
       />
+
       <Button type="submit" isLoading={isLoading}>
         Continuar
       </Button>
