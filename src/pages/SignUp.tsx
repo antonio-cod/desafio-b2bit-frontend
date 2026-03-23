@@ -29,7 +29,7 @@ export function SignUp() {
 
   const navigate = useNavigate();
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.SubmitEvent) {
     e.preventDefault();
     try {
       setIsLoading(true);
