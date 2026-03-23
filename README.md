@@ -1,73 +1,29 @@
-# React + TypeScript + Vite
+## Sobre o projeto
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O Mini Twitter foi desenvolvido como desafio técnico para um processo seletivo para vaga de Frontend. A proposta da aplicação é simular uma rede social simples, permitindo cadastro e autenticação de usuários, criação de posts com título, conteúdo e imagem opcional via URL, além da visualização da timeline com os posts gerais da plataforma.
 
-Currently, two official plugins are available:
+O foco do desenvolvimento foi construir uma interface funcional, organizada e integrada a uma API REST, aplicando boas práticas de componentização, validação de formulários, controle de sessão do usuário e consumo de dados no frontend.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tecnologias utilizadas
 
-## React Compiler
+- React 19: construção da interface com componentes reutilizáveis
+- TypeScript: tipagem estática e maior segurança no desenvolvimento
+- Vite: ambiente de desenvolvimento e build da aplicação
+- Tailwind CSS 4: estilização da interface com classes utilitárias
+- React Router 7: gerenciamento de rotas públicas e privadas
+- Axios: comunicação com a API REST
+- Zod: validação de formulários e regras de entrada
+- Lucide React: biblioteca de ícones
+- clsx + tailwind-merge: composição e organização de classes CSS
+- Context API: gerenciamento de autenticação e sessão do usuário
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Funcionalidades implementadas
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Cadastro de usuário
+- Login e controle de autenticação
+- Rotas protegidas para usuários autenticados
+- Criação de posts com título, conteúdo e imagem opcional
+- Envio de token no header `Authorization`
+- Listagem da timeline com posts gerais
+- Validação de dados no frontend
+- Tratamento de erros retornados pela API
